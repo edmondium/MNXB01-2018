@@ -28,7 +28,7 @@
 # at http://fortunecookieapi.herokuapp.com/v1/fortunes
 # understand what kind of data structure the website returns and write it here:
 #
-# Datastructure format is STRING
+# Datastructure format is JSON
 
 
 ###### DO NOT TOUCH THE CODE BELOW #####################################
@@ -177,7 +177,7 @@ fi
 # E7 (1 point)
 # Extract only the lines containing "message" and save them as $FTTEMPDIR/fortunes_messages
 #<YOUR CODE HERE>
-awk '/message/' $FTTEMPDIR/fortunes_pp > $FTTEMPDIR/fortunes_messages
+cat $FTTEMPDIR/fortunes_pp | grep message | cut -c19- > $FTTEMPDIR/fortunes_messages
 # E8 (2 points) calculate the number of lines in the fortunes_messages file
 # and store it in a variable NUMMSG
 # hint: use the command wc, the pipe and a tool called "cut"
@@ -191,14 +191,14 @@ NUMMSG=$(wc -l < $FTTEMPDIR/fortunes_messages)
 # use the predefined variable RANDOM and the bc command. For hints see:
 # https://coderwall.com/p/s2ttyg/random-number-generator-in-bash
 #<YOUR CODE HERE>
-CHOSEN=$(( $RANDOM % $NUMMSG))
+CHOSEN=$(($RANDOM % $NUMMSG+1))
 #E10 (2 points)
 # Pick the CHOSEN message from the list and print it on screen
 # use head and tail to achieve this. Search on the internet:
 # "print by line number using bash"
 # put the message in a variable called MESSAGE
 #<YOUR CODE HERE>
-MESSAGE=$(head -n $CHOSEN $FTTEMPDIR/fortunes_messages | tail -n 1)
+MESSAGE='head -$CHOSEN $FTTEMPDIR/fortunes_messages | tail - 1'
 # E11 (1 point) extract only the message content using cut
 #<YOUR CODE HERE>
 FORMES=$(echo $MESSAGE | cut -d '"' -f 4 )
